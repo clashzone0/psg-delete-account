@@ -295,7 +295,7 @@
     const SUPABASE_PUBLISHABLE_KEY =
       "sb_publishable_0AokeLP1S7gdD6dGXhas6g_6GvkPY8j";
 
-    const supabase = window.supabase.createClient(
+    const supabaseClient = window.supabase.createClient(
       SUPABASE_URL,
       SUPABASE_PUBLISHABLE_KEY
     );
@@ -340,7 +340,7 @@
     }
 
     async function loadSession() {
-      const { data, error } = await supabase.auth.getSession();
+      const { data, error } = await supabaseClient.auth.getSession();
 
       if (error) {
         setStatus("Could not verify the current session: " + error.message, "error");
@@ -354,7 +354,7 @@
       googleBtn.disabled = true;
       setStatus("Redirecting to Google...");
 
-      const { error } = await supabase.auth.signInWithOAuth({
+      const { error } = await supabaseClient.auth.signInWithOAuth({
         provider: "google",
         options: {
           redirectTo: REDIRECT_URL,
@@ -373,7 +373,7 @@
     signOutBtn.addEventListener("click", async () => {
       signOutBtn.disabled = true;
 
-      const { error } = await supabase.auth.signOut();
+      const { error } = await supabaseClient.auth.signOut();
 
       signOutBtn.disabled = false;
 
@@ -410,7 +410,7 @@
       setStatus("Deleting your account...");
 
       const { data: sessionData, error: sessionError } =
-        await supabase.auth.getSession();
+        await supabaseClient.auth.getSession();
 
       if (sessionError || !sessionData.session?.user) {
         setStatus(
@@ -422,7 +422,7 @@
         return;
       }
 
-      const { error } = await supabase.rpc("delete_my_account");
+      const { error } = await supabaseClient.rpc("delete_my_account");
 
       if (error) {
         setStatus(
@@ -434,7 +434,7 @@
         return;
       }
 
-      await supabase.auth.signOut();
+      await supabaseClient.auth.signOut();
 
       accountBox.classList.add("hidden");
       confirmBox.classList.add("hidden");
@@ -446,7 +446,7 @@
       );
     });
 
-    supabase.auth.onAuthStateChange((event, session) => {
+    supabaseClient.auth.onAuthStateChange((event, session) => {
       showAuthenticatedUser(session?.user || null);
     });
 
