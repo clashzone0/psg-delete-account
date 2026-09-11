@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Delete Account — Play Social Games</title>
+<style>
+:root{color-scheme:dark;--bg:#0b0812;--card:#15101f;--text:#f4efff;--muted:#b9aecb;--accent:#9b6cff;--border:#30243f;--danger:#ff6b7a}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:48px 20px 64px}.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px}
+h1{margin-top:0;font-size:30px}h2{font-size:19px;margin-top:30px}p,li{color:var(--muted)}
+.warning{border-left:4px solid var(--danger);background:rgba(255,107,122,.08);padding:12px 16px;border-radius:8px;margin:20px 0}
+label{display:block;margin:18px 0 8px;font-weight:600}input{width:100%;padding:13px 14px;border-radius:10px;border:1px solid var(--border);background:#0f0b17;color:var(--text);font:inherit}
+button{margin-top:18px;padding:13px 18px;border:0;border-radius:10px;background:var(--accent);color:white;font-weight:700;cursor:pointer;font:inherit}
+a{color:#c7adff}
+</style>
+</head>
+<body>
+<main><div class="card">
+<h1>Delete Account — Play Social Games</h1>
+
+<p>This page allows you to request deletion of your Play Social Games account and the personal data associated with it.</p>
+
+<div class="warning">
+<strong>Important:</strong> Submitting a request does not automatically delete an account.
+To protect accounts from unauthorized deletion requests, account ownership must be verified through a secure authentication process before any deletion is performed.
+</div>
+
+<h2>How to request account deletion</h2>
+<ol>
+<li>Sign in using the Google account associated with your Play Social Games account.</li>
+<li>Confirm that you want to permanently delete your account.</li>
+<li>The deletion request is processed only for the authenticated account.</li>
+</ol>
+
+<p>
+For security reasons, this page must never delete an account based only on an email address,
+a user ID, or information entered manually by another person.
+</p>
+
+<form id="requestForm">
+<label for="email">Account email</label>
+<input id="email" name="email" type="email" autocomplete="email" required placeholder="you@example.com">
+
+<label for="confirm">Type DELETE to confirm</label>
+<input id="confirm" name="confirm" type="text" required autocomplete="off" placeholder="DELETE">
+
+<button type="submit">Request Account Deletion</button>
+</form>
+
+<p id="status" role="status"></p>
+
+<h2>What will be deleted</h2>
+<p>
+Once the request has been authenticated and processed, the account and associated personal
+data will be deleted in accordance with the Play Social Games Privacy Policy, except for
+information that must be retained when required by law or for legitimate security,
+fraud-prevention, or compliance purposes.
+</p>
+
+<p>
+See also the <a href="./index.html">Privacy Policy</a>.
+</p>
+
+<script>
+/*
+ SECURITY NOTICE:
+ This page must NOT delete accounts directly from the browser.
+
+ Before publishing, connect REQUEST_ENDPOINT to a trusted server-side endpoint
+ (for example, a Supabase Edge Function).
+
+ The server must obtain the authenticated user's identity from the verified
+ Supabase session/JWT (auth.uid()) and must NOT trust a user ID or email supplied
+ by the browser.
+
+ The server should require a valid authenticated session and perform the deletion
+ only for that authenticated user. Never expose the Supabase service-role key
+ in this HTML or in the mobile application.
+*/
+const REQUEST_ENDPOINT = "";
+
+document.getElementById("requestForm").addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const email = document.getElementById("email").value.trim();
+  const confirm = document.getElementById("confirm").value.trim();
+  const status = document.getElementById("status");
+
+  if (confirm !== "DELETE") {
+    status.textContent = "Type DELETE exactly as shown.";
+    return;
+  }
+
+  if (!REQUEST_ENDPOINT) {
+    status.textContent =
+      "The deletion request endpoint has not been configured yet.";
+    return;
+  }
+
+  try {
+    const response = await fetch(REQUEST_ENDPOINT, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      credentials: "include",
+      body: JSON.stringify({
+        request: "account_deletion",
+        email: email
+      })
+    });
+
+    if (!response.ok) throw new Error("request_failed");
+
+    status.textContent =
+      "Your deletion request was submitted. The account will be deleted only after the secure authentication checks are completed.";
+    event.target.reset();
+  } catch {
+    status.textContent =
+      "The deletion request could not be submitted right now. Please try again later.";
+  }
+});
+</script>
+</div></main>
+</body>
+</html>
