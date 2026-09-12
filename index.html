@@ -1,456 +1,456 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Delete Account — Play Social Games</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Excluir conta — Play Social Games</title>
+<meta name="robots" content="noindex" />
+<meta name="referrer" content="no-referrer" />
+<!--
+  A política de conteúdo, apertada até onde uma página do GitHub Pages permite.
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <style>
+  Só o jsDelivr pode servir script, e só o projeto do Supabase pode receber
+  requisição. Imagem nenhuma vem de fora, e formulário nenhum é postado para
+  lugar nenhum. `frame-ancestors` não funciona em meta — o GitHub Pages não
+  manda cabeçalho —, então a defesa contra a página ser embutida num quadro
+  alheio está no script, no começo de tudo.
+-->
+<meta http-equiv="Content-Security-Policy" content="
+  default-src 'none';
+  script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net;
+  connect-src https://warxdagzxytwubxekwqx.supabase.co;
+  style-src 'unsafe-inline';
+  img-src 'self' data:;
+  base-uri 'none';
+  form-action 'none';
+" />
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f6f6f8;
+    --card: #ffffff;
+    --ink: #17161a;
+    --muted: #6b6a73;
+    --line: #e3e2e8;
+    --brand: #5b21ea;
+    --danger: #c62a2a;
+    --danger-ink: #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
     :root {
-      color-scheme: dark;
-      --bg: #0b0712;
-      --card: #171021;
-      --border: #352544;
-      --text: #f5efff;
-      --muted: #c6b9d9;
-      --primary: #9b6cff;
-      --primary-hover: #ad83ff;
-      --danger: #ff5f6d;
-      --danger-bg: #291521;
-      --success: #54d98c;
+      --bg: #131217;
+      --card: #1c1b22;
+      --ink: #f2f1f5;
+      --muted: #a3a1ad;
+      --line: #2e2c36;
+      --brand: #a78bfa;
+      --danger: #e05555;
     }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: var(--bg);
-      color: var(--text);
-      font-family: Arial, Helvetica, sans-serif;
-      display: flex;
-      justify-content: center;
-      padding: 48px 20px;
-    }
-
-    .card {
-      width: 100%;
-      max-width: 660px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 28px;
-      box-shadow: 0 18px 50px rgba(0, 0, 0, .35);
-    }
-
-    h1 {
-      margin: 0 0 22px;
-      font-size: 29px;
-    }
-
-    h2 {
-      margin: 28px 0 12px;
-      font-size: 19px;
-    }
-
-    p, li {
-      color: var(--muted);
-      line-height: 1.65;
-    }
-
-    .warning {
-      margin: 22px 0;
-      padding: 16px;
-      background: var(--danger-bg);
-      border-left: 4px solid var(--danger);
-      border-radius: 8px;
-    }
-
-    .warning p {
-      margin: 0;
-      color: #f4dce2;
-    }
-
-    .login-box,
-    .account-box,
-    .confirm-box {
-      margin-top: 22px;
-      padding: 20px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-    }
-
-    .account-box {
-      border-color: rgba(84, 217, 140, .35);
-    }
-
-    .email {
-      color: var(--text);
-      font-weight: 700;
-      word-break: break-word;
-    }
-
-    button {
-      border: 0;
-      border-radius: 9px;
-      padding: 13px 18px;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    button:disabled {
-      opacity: .55;
-      cursor: not-allowed;
-    }
-
-    .google-btn {
-      width: 100%;
-      background: #fff;
-      color: #202124;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-    }
-
-    .google-btn:hover {
-      background: #f1f1f1;
-    }
-
-    .delete-btn {
-      background: var(--danger);
-      color: white;
-    }
-
-    .delete-btn:hover:not(:disabled) {
-      filter: brightness(1.08);
-    }
-
-    .secondary-btn {
-      background: transparent;
-      color: var(--muted);
-      border: 1px solid var(--border);
-      margin-left: 8px;
-    }
-
-    .secondary-btn:hover {
-      color: var(--text);
-    }
-
-    label {
-      display: block;
-      margin: 18px 0 8px;
-      font-weight: 700;
-    }
-
-    input {
-      width: 100%;
-      padding: 13px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: #0e0916;
-      color: var(--text);
-      font-size: 16px;
-      outline: none;
-    }
-
-    input:focus {
-      border-color: var(--primary);
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    .status {
-      margin-top: 16px;
-      min-height: 24px;
-      color: var(--muted);
-    }
-
-    .success {
-      color: var(--success);
-    }
-
-    .error {
-      color: #ff8d98;
-    }
-
-    .security-note {
-      font-size: 14px;
-      color: #a99bbd;
-      margin-top: 16px;
-    }
-
-    code {
-      color: #e0ceff;
-    }
-
-    .actions {
-      margin-top: 20px;
-    }
-  </style>
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 24px 16px 48px;
+    background: var(--bg);
+    color: var(--ink);
+    font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  main { max-width: 520px; margin: 0 auto; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 22px;
+    margin-top: 16px;
+  }
+  h1 { font-size: 22px; margin: 0 0 4px; letter-spacing: -0.01em; }
+  h2 { font-size: 15px; margin: 0 0 10px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+  p { margin: 0 0 12px; }
+  .muted { color: var(--muted); font-size: 14px; }
+  ul { margin: 0 0 12px; padding-left: 20px; }
+  li { margin-bottom: 4px; }
+  button {
+    font: inherit;
+    font-weight: 600;
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--card);
+    color: var(--ink);
+    cursor: pointer;
+  }
+  button:hover:not(:disabled) { border-color: var(--brand); }
+  button:disabled { opacity: .45; cursor: not-allowed; }
+  .primary { background: var(--brand); border-color: var(--brand); color: #fff; }
+  .danger { background: var(--danger); border-color: var(--danger); color: var(--danger-ink); }
+  input {
+    font: inherit;
+    width: 100%;
+    min-height: 48px;
+    padding: 10px 14px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    color: var(--ink);
+    letter-spacing: .08em;
+  }
+  input:focus { outline: 2px solid var(--brand); outline-offset: 1px; }
+  .who {
+    display: flex; gap: 10px; align-items: baseline;
+    padding: 12px 14px; margin-bottom: 16px;
+    border: 1px solid var(--line); border-radius: 10px;
+    background: var(--bg);
+  }
+  /* Só o endereço quebra no meio: ele pode ser longo e não tem onde partir.
+     Aplicado na linha toda, ele partia também o rótulo — "Conectado c/omo". */
+  .who b { font-weight: 600; word-break: break-all; min-width: 0; }
+  .who span { flex: none; }
+  .note {
+    border-left: 3px solid var(--danger);
+    padding: 2px 0 2px 12px;
+    margin: 0 0 16px;
+  }
+  .msg { margin-top: 12px; font-size: 14px; }
+  .err { color: var(--danger); }
+  .ok { color: var(--brand); font-weight: 600; }
+  .langs { display: flex; gap: 8px; margin-bottom: 4px; }
+  .langs button { width: auto; min-height: 32px; padding: 4px 12px; font-size: 13px; font-weight: 500; }
+  .langs button[aria-pressed="true"] { border-color: var(--brand); color: var(--brand); }
+  footer { margin-top: 20px; text-align: center; }
+  [hidden] { display: none !important; }
+</style>
 </head>
-
 <body>
-  <main class="card">
-    <h1>Delete Account — Play Social Games</h1>
+<main>
+  <noscript>
+    <div class="card">
+      <p class="err" data-t="noJs">Esta página precisa de JavaScript para apagar a sua conta com
+      segurança. Ative-o e recarregue, ou apague a conta pelo próprio aplicativo, em
+      Configurações.</p>
+    </div>
+  </noscript>
 
-    <p>
-      This page allows you to permanently delete your Play Social Games account
-      and the personal data associated with it.
+  <div class="card" id="offline" hidden>
+    <p class="err" id="offline-msg">
+      Não foi possível carregar esta página por completo. Verifique sua conexão e tente de novo.
+      Você também pode apagar a conta pelo próprio aplicativo, em Configurações → Excluir conta.
     </p>
+  </div>
 
-    <div class="warning">
-      <p>
-        <strong>Important:</strong> Account deletion is permanent and cannot be
-        undone. You must authenticate with Google before deletion can be requested.
+  <div class="langs" id="langs">
+    <button type="button" data-lang="pt" aria-pressed="true">Português</button>
+    <button type="button" data-lang="en" aria-pressed="false">English</button>
+    <button type="button" data-lang="es" aria-pressed="false">Español</button>
+  </div>
+
+  <h1 data-t="title">Excluir conta</h1>
+  <p class="muted" data-t="app">Play Social Games</p>
+
+  <!-- Passo 1: quem é você -->
+  <section class="card" id="step-in">
+    <h2 data-t="step1">Passo 1 — identifique-se</h2>
+    <p data-t="signInHint">
+      Entre com a mesma conta Google que você usa no aplicativo. Sem isso não há
+      como saber qual conta apagar — e ninguém pode apagar a conta de outra pessoa.
+    </p>
+    <button class="primary" id="signin" data-t="signIn">Entrar com Google</button>
+    <p class="msg err" id="err-in" hidden></p>
+  </section>
+
+  <!-- Passo 2: confirmar -->
+  <section class="card" id="step-del" hidden>
+    <h2 data-t="step2">Passo 2 — confirme</h2>
+
+    <div class="who">
+      <span class="muted" data-t="signedAs">Conectado como</span>
+      <b id="email"></b>
+    </div>
+
+    <div class="note">
+      <p data-t="warn"><b>Esta ação é permanente e não pode ser desfeita.</b></p>
+      <p class="muted" data-t="whatGoes">Serão apagados definitivamente:</p>
+      <ul class="muted">
+        <li data-t="w1">Seu perfil, nome de exibição e avatar</li>
+        <li data-t="w2">Suas roletas salvas</li>
+        <li data-t="w3">Sua sequência de dias e seu histórico</li>
+        <li data-t="w4">Sua participação em salas, respostas e desenhos</li>
+        <li data-t="w5">Seu acesso à conta</li>
+      </ul>
+      <p class="muted" data-t="subs">
+        Uma assinatura ativa do Play Plus <b>não</b> é cancelada por aqui. Cancele
+        antes na Google Play, em Pagamentos e assinaturas, ou a cobrança continua.
       </p>
     </div>
 
-    <h2>Secure account verification</h2>
+    <p data-t="typeHint">Para confirmar, digite <b>CONFIRM</b> no campo abaixo:</p>
+    <input id="confirm" type="text" autocomplete="off" autocapitalize="characters"
+           spellcheck="false" placeholder="CONFIRM" aria-label="CONFIRM" />
 
-    <p>
-      For security reasons, this page does not accept an email address as proof
-      of account ownership. You must sign in with the Google account associated
-      with your Play Social Games account.
+    <button class="danger" id="delete" disabled data-t="deleteBtn">Excluir minha conta</button>
+    <p class="msg err" id="err-del" hidden></p>
+
+    <footer>
+      <button id="signout" data-t="cancel">Cancelar e sair</button>
+    </footer>
+  </section>
+
+  <!-- Passo 3: pronto -->
+  <section class="card" id="step-done" hidden>
+    <h2 data-t="step3">Concluído</h2>
+    <p class="ok" data-t="doneTitle">Sua conta foi excluída.</p>
+    <p class="muted" data-t="doneBody">
+      Os dados ligados a ela foram removidos dos nossos servidores. Você pode
+      fechar esta página. Se quiser jogar de novo um dia, basta entrar no
+      aplicativo e uma conta nova será criada.
     </p>
+  </section>
 
-    <!-- Shown before authentication -->
-    <section id="loginBox" class="login-box">
-      <button id="googleBtn" class="google-btn" type="button">
-        <span aria-hidden="true">G</span>
-        Sign in with Google
-      </button>
+  <p class="muted" style="margin-top:20px;text-align:center">
+    <span data-t="privacy">Política de privacidade</span>:
+    <a href="https://clashzone0.github.io/psg-privacy-policy/">clashzone0.github.io/psg-privacy-policy</a>
+  </p>
+</main>
 
-      <p class="security-note">
-        The deletion operation is performed only for the authenticated Supabase
-        account. This page never accepts a user ID or account email to choose
-        which account to delete.
-      </p>
-    </section>
+<script>
+/*
+ * Os idiomas e a trava de quadro moram fora do módulo, de propósito.
+ *
+ * O módulo depende de um arquivo que vem da internet; se essa busca falhar — rede
+ * ruim, CDN fora do ar, rede corporativa que bloqueia —, nada dele roda. A troca de
+ * idioma e o aviso de falha não podem morrer junto: são justamente o que a pessoa
+ * precisa ver quando o resto não carregou.
+ */
+if (window.top !== window.self) {
+  document.body.textContent = '';
+  window.top.location = window.self.location;
+}
 
-    <!-- Shown only after authentication -->
-    <section id="accountBox" class="account-box hidden">
-      <strong>Authenticated account</strong>
-      <p class="email" id="accountEmail"></p>
+const STRINGS = {
+  pt: {},
+  en: {
+    title: 'Delete account', app: 'Play Social Games',
+    step1: 'Step 1 — identify yourself',
+    signInHint: 'Sign in with the same Google account you use in the app. Without it there is no way to know which account to delete — and nobody can delete anyone else’s account.',
+    signIn: 'Sign in with Google',
+    step2: 'Step 2 — confirm', signedAs: 'Signed in as',
+    warn: 'This action is permanent and cannot be undone.',
+    whatGoes: 'The following will be permanently deleted:',
+    w1: 'Your profile, display name and avatar',
+    w2: 'Your saved wheels',
+    w3: 'Your day streak and your history',
+    w4: 'Your room membership, answers and drawings',
+    w5: 'Your access to the account',
+    subs: 'An active Play Plus subscription is NOT cancelled here. Cancel it first on Google Play, under Payments and subscriptions, or billing continues.',
+    typeHint: 'To confirm, type CONFIRM in the field below:',
+    deleteBtn: 'Delete my account', cancel: 'Cancel and sign out',
+    step3: 'Done', doneTitle: 'Your account has been deleted.',
+    doneBody: 'The data linked to it has been removed from our servers. You can close this page. If you ever want to play again, just open the app and a new account will be created.',
+    privacy: 'Privacy policy',
+  },
+  es: {
+    title: 'Eliminar cuenta', app: 'Play Social Games',
+    step1: 'Paso 1 — identifícate',
+    signInHint: 'Entra con la misma cuenta de Google que usas en la aplicación. Sin eso no hay forma de saber qué cuenta eliminar — y nadie puede eliminar la cuenta de otra persona.',
+    signIn: 'Entrar con Google',
+    step2: 'Paso 2 — confirma', signedAs: 'Conectado como',
+    warn: 'Esta acción es permanente y no se puede deshacer.',
+    whatGoes: 'Se eliminará definitivamente:',
+    w1: 'Tu perfil, nombre visible y avatar',
+    w2: 'Tus ruletas guardadas',
+    w3: 'Tu racha de días y tu historial',
+    w4: 'Tu participación en salas, respuestas y dibujos',
+    w5: 'Tu acceso a la cuenta',
+    subs: 'Una suscripción activa de Play Plus NO se cancela aquí. Cancélala antes en Google Play, en Pagos y suscripciones, o el cobro continúa.',
+    typeHint: 'Para confirmar, escribe CONFIRM en el campo de abajo:',
+    deleteBtn: 'Eliminar mi cuenta', cancel: 'Cancelar y salir',
+    step3: 'Hecho', doneTitle: 'Tu cuenta ha sido eliminada.',
+    doneBody: 'Los datos vinculados a ella se han eliminado de nuestros servidores. Puedes cerrar esta página. Si algún día quieres volver a jugar, abre la aplicación y se creará una cuenta nueva.',
+    privacy: 'Política de privacidad',
+  },
+};
 
-      <p>
-        You are authenticated as this account. If this is not the account you
-        intended to delete, sign out and choose the correct Google account.
-      </p>
+// O português é o que já está escrito no HTML; guardá-lo na primeira passagem
+// evita manter o mesmo texto em dois lugares.
+document.querySelectorAll('[data-t]').forEach((node) => {
+  STRINGS.pt[node.dataset.t] = node.innerHTML;
+});
 
-      <button id="signOutBtn" class="secondary-btn" type="button">
-        Sign out
-      </button>
-    </section>
+function setLang(lang) {
+  const dict = STRINGS[lang] ?? STRINGS.pt;
+  document.querySelectorAll('[data-t]').forEach((node) => {
+    const value = dict[node.dataset.t];
+    // `innerHTML` só com texto que está neste arquivo — nada vindo de usuário
+    // nem de rede passa por aqui. É o que permite manter o <b> das frases.
+    if (value !== undefined) node.innerHTML = value;
+  });
+  document.documentElement.lang = lang === 'pt' ? 'pt-BR' : lang;
+  document.querySelectorAll('#langs button').forEach((b) => {
+    b.setAttribute('aria-pressed', String(b.dataset.lang === lang));
+  });
+}
 
-    <section id="confirmBox" class="confirm-box hidden">
-      <h2>Confirm permanent deletion</h2>
+document.getElementById('langs').addEventListener('click', (e) => {
+  const lang = e.target.closest('button')?.dataset.lang;
+  if (lang) setLang(lang);
+});
+window.__setLang = setLang;
+</script>
 
-      <p>
-        This will permanently delete your Play Social Games account and
-        associated application data.
-      </p>
+<script type="module">
+/*
+ * A página de exclusão de conta.
+ *
+ * O que a torna segura não é nada que esteja escrito aqui — é a forma da função
+ * no banco. `delete_my_account()` é `security definer` e age sobre `auth.uid()`,
+ * quer dizer, sobre quem está chamando, e sobre mais ninguém. Não existe
+ * parâmetro de usuário. Mesmo que alguém reescreva este arquivo inteiro no
+ * próprio navegador, a única conta que ele consegue apagar continua sendo a
+ * dele. É por isso que uma página estática pode fazer isto sem servidor próprio.
+ *
+ * A chave abaixo é a publicável, a mesma que já viaja dentro do aplicativo na
+ * loja. Ela não dá acesso a nada: toda tabela tem RLS, e a leitura de perfil é
+ * restrita ao dono. A `service_role`, que ignora RLS, não existe nesta página e
+ * nunca pode existir numa página — ela vive só no painel do Supabase.
+ */
 
-      <label for="confirmText">Type DELETE to confirm</label>
-      <input
-        id="confirmText"
-        type="text"
-        autocomplete="off"
-        autocapitalize="characters"
-        spellcheck="false"
-        placeholder="DELETE"
-      >
+/*
+ * A importação é dinâmica para poder falhar de forma visível.
+ *
+ * Um `import` estático que não chega quebra o módulo inteiro em silêncio: a página
+ * fica desenhada, o botão fica clicável, e clicar nele não faz nada. Numa página de
+ * apagar conta isso é pior que um erro — a pessoa vai embora achando que apagou.
+ */
+let createClient;
+try {
+  ({ createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'));
+} catch {
+  document.getElementById('offline').hidden = false;
+  document.getElementById('signin').disabled = true;
+  throw new Error('supabase-js indisponível');
+}
 
-      <div class="actions">
-        <button id="deleteBtn" class="delete-btn" type="button" disabled>
-          Delete My Account
-        </button>
-      </div>
-    </section>
+const SUPABASE_URL = 'https://warxdagzxytwubxekwqx.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_0AokeLP1S7gdD6dGXhas6g_6GvkPY8j';
 
-    <div id="status" class="status" role="status" aria-live="polite"></div>
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
+  auth: {
+    flowType: 'pkce',
+    detectSessionInUrl: true,
+    persistSession: true,
+    autoRefreshToken: false,
+    /*
+     * `sessionStorage`, e não `localStorage`.
+     *
+     * O PKCE precisa guardar um segredo entre a ida ao Google e a volta, então
+     * alguma memória é obrigatória. A da aba fecha junto com ela: numa lanhouse
+     * ou no computador de outra pessoa, não fica sessão pendurada depois que a
+     * janela some.
+     */
+    storage: window.sessionStorage,
+  },
+});
 
-    <h2>What will be deleted</h2>
+const $ = (id) => document.getElementById(id);
+const el = {
+  stepIn: $('step-in'), stepDel: $('step-del'), stepDone: $('step-done'),
+  signin: $('signin'), signout: $('signout'), del: $('delete'),
+  confirm: $('confirm'), email: $('email'),
+  errIn: $('err-in'), errDel: $('err-del'),
+};
 
-    <ul>
-      <li>Your Play Social Games account.</li>
-      <li>Your profile and associated account data.</li>
-      <li>Your game-related data associated with the account.</li>
-      <li>Other data that the application deletes as part of its account-deletion procedure.</li>
-    </ul>
+/* ---------------- fluxo ---------------- */
 
-    <p class="security-note">
-      The public Supabase publishable key used by this page is not a secret.
-      Never place a Supabase service-role or secret key in this file.
-    </p>
-  </main>
+function show(step) {
+  el.stepIn.hidden = step !== 'in';
+  el.stepDel.hidden = step !== 'del';
+  el.stepDone.hidden = step !== 'done';
+}
 
-  <script>
-    const SUPABASE_URL = "https://warxdagzxytwubxekwqx.supabase.co";
-    const SUPABASE_PUBLISHABLE_KEY =
-      "sb_publishable_0AokeLP1S7gdD6dGXhas6g_6GvkPY8j";
+function fail(node, message) {
+  node.textContent = message;
+  node.hidden = false;
+}
 
-    const supabaseClient = window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_PUBLISHABLE_KEY
-    );
+async function refresh() {
+  const { data } = await supabase.auth.getSession();
+  const user = data.session?.user;
+  if (!user) { show('in'); return; }
 
-    const REDIRECT_URL =
-      "https://clashzone0.github.io/psg-delete-account/";
+  el.email.textContent = user.email ?? user.id;
+  show('del');
+}
 
-    const loginBox = document.getElementById("loginBox");
-    const accountBox = document.getElementById("accountBox");
-    const confirmBox = document.getElementById("confirmBox");
-    const accountEmail = document.getElementById("accountEmail");
-    const googleBtn = document.getElementById("googleBtn");
-    const signOutBtn = document.getElementById("signOutBtn");
-    const confirmText = document.getElementById("confirmText");
-    const deleteBtn = document.getElementById("deleteBtn");
-    const status = document.getElementById("status");
+el.signin.addEventListener('click', async () => {
+  el.errIn.hidden = true;
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      // De volta para esta mesma página. O endereço precisa estar na lista de
+      // redirecionamentos permitidos do Supabase, senão o Google devolve a
+      // pessoa para a raiz do projeto e nada acontece.
+      redirectTo: window.location.origin + window.location.pathname,
+      // Obriga a escolher a conta: quem tem duas no navegador não pode ser
+      // levado a apagar a errada em silêncio.
+      queryParams: { prompt: 'select_account' },
+    },
+  });
+  if (error) fail(el.errIn, error.message);
+});
 
-    function setStatus(message, type = "") {
-      status.textContent = message;
-      status.className = "status " + type;
-    }
+el.signout.addEventListener('click', async () => {
+  await supabase.auth.signOut();
+  el.confirm.value = '';
+  el.del.disabled = true;
+  show('in');
+});
 
-    function showAuthenticatedUser(user) {
-      if (!user) {
-        loginBox.classList.remove("hidden");
-        accountBox.classList.add("hidden");
-        confirmBox.classList.add("hidden");
-        accountEmail.textContent = "";
-        return;
-      }
+// O botão só acorda com a palavra exata, em maiúsculas. É a trava contra o
+// clique distraído — e contra o dedo que erra num celular.
+el.confirm.addEventListener('input', () => {
+  el.del.disabled = el.confirm.value.trim() !== 'CONFIRM';
+});
 
-      loginBox.classList.add("hidden");
-      accountBox.classList.remove("hidden");
-      confirmBox.classList.remove("hidden");
+el.del.addEventListener('click', async () => {
+  if (el.confirm.value.trim() !== 'CONFIRM') return;
 
-      accountEmail.textContent =
-        user.email || "Authenticated Google account";
+  el.errDel.hidden = true;
+  el.del.disabled = true;
+  el.del.textContent = '...';
 
-      setStatus(
-        "Account authenticated. Review the account above before continuing."
-      );
-    }
+  // A função não recebe quem apagar: ela apaga quem chamou. É essa ausência de
+  // parâmetro que torna a página inofensiva para terceiros.
+  const { error } = await supabase.rpc('delete_my_account');
 
-    async function loadSession() {
-      const { data, error } = await supabaseClient.auth.getSession();
+  if (error) {
+    fail(el.errDel, error.message);
+    el.del.disabled = false;
+    el.del.textContent = 'Excluir minha conta';
+    return;
+  }
 
-      if (error) {
-        setStatus("Could not verify the current session: " + error.message, "error");
-        return;
-      }
+  // A sessão morreu junto com o usuário; o signOut aqui é só para não deixar
+  // um token inútil guardado na aba.
+  await supabase.auth.signOut().catch(() => {});
+  show('done');
+});
 
-      showAuthenticatedUser(data.session?.user || null);
-    }
+/*
+ * A volta do Google traz um `?code=` na barra de endereços. O supabase-js troca
+ * esse código por sessão sozinho; o que falta é tirá-lo da URL, para que a
+ * pessoa não deixe um código de autorização no histórico do navegador nem num
+ * link compartilhado sem querer.
+ */
+supabase.auth.onAuthStateChange(() => {
+  if (window.location.search) {
+    history.replaceState({}, '', window.location.pathname);
+  }
+  void refresh();
+});
 
-    googleBtn.addEventListener("click", async () => {
-      googleBtn.disabled = true;
-      setStatus("Redirecting to Google...");
-
-      const { error } = await supabaseClient.auth.signInWithOAuth({
-        provider: "google",
-        options: {
-          redirectTo: REDIRECT_URL,
-          queryParams: {
-            prompt: "select_account"
-          }
-        }
-      });
-
-      if (error) {
-        googleBtn.disabled = false;
-        setStatus("Google sign-in failed: " + error.message, "error");
-      }
-    });
-
-    signOutBtn.addEventListener("click", async () => {
-      signOutBtn.disabled = true;
-
-      const { error } = await supabaseClient.auth.signOut();
-
-      signOutBtn.disabled = false;
-
-      if (error) {
-        setStatus("Could not sign out: " + error.message, "error");
-        return;
-      }
-
-      confirmText.value = "";
-      deleteBtn.disabled = true;
-      setStatus("You have been signed out.");
-      showAuthenticatedUser(null);
-    });
-
-    confirmText.addEventListener("input", () => {
-      deleteBtn.disabled = confirmText.value.trim() !== "DELETE";
-    });
-
-    deleteBtn.addEventListener("click", async () => {
-      if (confirmText.value.trim() !== "DELETE") {
-        return;
-      }
-
-      const confirmed = window.confirm(
-        "Are you absolutely sure you want to permanently delete this Play Social Games account?"
-      );
-
-      if (!confirmed) {
-        return;
-      }
-
-      deleteBtn.disabled = true;
-      confirmText.disabled = true;
-      setStatus("Deleting your account...");
-
-      const { data: sessionData, error: sessionError } =
-        await supabaseClient.auth.getSession();
-
-      if (sessionError || !sessionData.session?.user) {
-        setStatus(
-          "Your authentication session is no longer valid. Please sign in again.",
-          "error"
-        );
-        confirmText.disabled = false;
-        deleteBtn.disabled = false;
-        return;
-      }
-
-      const { error } = await supabaseClient.rpc("delete_my_account");
-
-      if (error) {
-        setStatus(
-          "Account deletion failed: " + error.message,
-          "error"
-        );
-        confirmText.disabled = false;
-        deleteBtn.disabled = false;
-        return;
-      }
-
-      await supabaseClient.auth.signOut();
-
-      accountBox.classList.add("hidden");
-      confirmBox.classList.add("hidden");
-      loginBox.classList.add("hidden");
-
-      setStatus(
-        "Your Play Social Games account and associated application data have been deleted.",
-        "success"
-      );
-    });
-
-    supabaseClient.auth.onAuthStateChange((event, session) => {
-      showAuthenticatedUser(session?.user || null);
-    });
-
-    loadSession();
-  </script>
+void refresh();
+</script>
 </body>
 </html>
