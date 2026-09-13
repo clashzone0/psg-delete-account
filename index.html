@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Excluir conta — Play Social Games</title>
+<title>Delete account — Play Social Games</title>
 <meta name="robots" content="noindex" />
 <meta name="referrer" content="no-referrer" />
 <!--
@@ -127,89 +127,89 @@
 <main>
   <noscript>
     <div class="card">
-      <p class="err" data-t="noJs">Esta página precisa de JavaScript para apagar a sua conta com
-      segurança. Ative-o e recarregue, ou apague a conta pelo próprio aplicativo, em
-      Configurações.</p>
+      <p class="err" data-t="noJs">This page needs JavaScript to delete your account safely.
+      Turn it on and reload, or delete your account from the app itself, under
+      Settings.</p>
     </div>
   </noscript>
 
   <div class="card" id="offline" hidden>
-    <p class="err" id="offline-msg">
-      Não foi possível carregar esta página por completo. Verifique sua conexão e tente de novo.
-      Você também pode apagar a conta pelo próprio aplicativo, em Configurações → Excluir conta.
+    <p class="err" id="offline-msg" data-t="offline">
+      This page could not be fully loaded. Check your connection and try again.
+      You can also delete your account from the app itself, under Settings → Delete account.
     </p>
   </div>
 
   <div class="langs" id="langs">
-    <button type="button" data-lang="pt" aria-pressed="true">Português</button>
-    <button type="button" data-lang="en" aria-pressed="false">English</button>
+    <button type="button" data-lang="en" aria-pressed="true">English</button>
+    <button type="button" data-lang="pt" aria-pressed="false">Português</button>
     <button type="button" data-lang="es" aria-pressed="false">Español</button>
   </div>
 
-  <h1 data-t="title">Excluir conta</h1>
+  <h1 data-t="title">Delete account</h1>
   <p class="muted" data-t="app">Play Social Games</p>
 
   <!-- Passo 1: quem é você -->
   <section class="card" id="step-in">
-    <h2 data-t="step1">Passo 1 — identifique-se</h2>
+    <h2 data-t="step1">Step 1 — identify yourself</h2>
     <p data-t="signInHint">
-      Entre com a mesma conta Google que você usa no aplicativo. Sem isso não há
-      como saber qual conta apagar — e ninguém pode apagar a conta de outra pessoa.
+      Sign in with the same Google account you use in the app. Without it there is
+      no way to know which account to delete — and nobody can delete anyone else’s account.
     </p>
-    <button class="primary" id="signin" data-t="signIn">Entrar com Google</button>
+    <button class="primary" id="signin" data-t="signIn">Sign in with Google</button>
     <p class="msg err" id="err-in" hidden></p>
   </section>
 
   <!-- Passo 2: confirmar -->
   <section class="card" id="step-del" hidden>
-    <h2 data-t="step2">Passo 2 — confirme</h2>
+    <h2 data-t="step2">Step 2 — confirm</h2>
 
     <div class="who">
-      <span class="muted" data-t="signedAs">Conectado como</span>
+      <span class="muted" data-t="signedAs">Signed in as</span>
       <b id="email"></b>
     </div>
 
     <div class="note">
-      <p data-t="warn"><b>Esta ação é permanente e não pode ser desfeita.</b></p>
-      <p class="muted" data-t="whatGoes">Serão apagados definitivamente:</p>
+      <p data-t="warn"><b>This action is permanent and cannot be undone.</b></p>
+      <p class="muted" data-t="whatGoes">The following will be permanently deleted:</p>
       <ul class="muted">
-        <li data-t="w1">Seu perfil, nome de exibição e avatar</li>
-        <li data-t="w2">Suas roletas salvas</li>
-        <li data-t="w3">Sua sequência de dias e seu histórico</li>
-        <li data-t="w4">Sua participação em salas, respostas e desenhos</li>
-        <li data-t="w5">Seu acesso à conta</li>
+        <li data-t="w1">Your profile, display name and avatar</li>
+        <li data-t="w2">Your saved wheels</li>
+        <li data-t="w3">Your day streak and your history</li>
+        <li data-t="w4">Your room membership, answers and drawings</li>
+        <li data-t="w5">Your access to the account</li>
       </ul>
       <p class="muted" data-t="subs">
-        Uma assinatura ativa do Play Plus <b>não</b> é cancelada por aqui. Cancele
-        antes na Google Play, em Pagamentos e assinaturas, ou a cobrança continua.
+        An active Play Plus subscription is <b>not</b> cancelled here. Cancel it first
+        on Google Play, under Payments and subscriptions, or billing continues.
       </p>
     </div>
 
-    <p data-t="typeHint">Para confirmar, digite <b>CONFIRM</b> no campo abaixo:</p>
+    <p data-t="typeHint">To confirm, type <b>CONFIRM</b> in the field below:</p>
     <input id="confirm" type="text" autocomplete="off" autocapitalize="characters"
            spellcheck="false" placeholder="CONFIRM" aria-label="CONFIRM" />
 
-    <button class="danger" id="delete" disabled data-t="deleteBtn">Excluir minha conta</button>
+    <button class="danger" id="delete" disabled data-t="deleteBtn">Delete my account</button>
     <p class="msg err" id="err-del" hidden></p>
 
     <footer>
-      <button id="signout" data-t="cancel">Cancelar e sair</button>
+      <button id="signout" data-t="cancel">Cancel and sign out</button>
     </footer>
   </section>
 
   <!-- Passo 3: pronto -->
   <section class="card" id="step-done" hidden>
-    <h2 data-t="step3">Concluído</h2>
-    <p class="ok" data-t="doneTitle">Sua conta foi excluída.</p>
+    <h2 data-t="step3">Done</h2>
+    <p class="ok" data-t="doneTitle">Your account has been deleted.</p>
     <p class="muted" data-t="doneBody">
-      Os dados ligados a ela foram removidos dos nossos servidores. Você pode
-      fechar esta página. Se quiser jogar de novo um dia, basta entrar no
-      aplicativo e uma conta nova será criada.
+      The data linked to it has been removed from our servers. You can close this
+      page. If you ever want to play again, just open the app and a new account
+      will be created.
     </p>
   </section>
 
   <p class="muted" style="margin-top:20px;text-align:center">
-    <span data-t="privacy">Política de privacidade</span>:
+    <span data-t="privacy">Privacy policy</span>:
     <a href="https://clashzone0.github.io/psg-privacy-policy/">clashzone0.github.io/psg-privacy-policy</a>
   </p>
 </main>
@@ -229,28 +229,31 @@ if (window.top !== window.self) {
 }
 
 const STRINGS = {
-  pt: {},
-  en: {
-    title: 'Delete account', app: 'Play Social Games',
-    step1: 'Step 1 — identify yourself',
-    signInHint: 'Sign in with the same Google account you use in the app. Without it there is no way to know which account to delete — and nobody can delete anyone else’s account.',
-    signIn: 'Sign in with Google',
-    step2: 'Step 2 — confirm', signedAs: 'Signed in as',
-    warn: 'This action is permanent and cannot be undone.',
-    whatGoes: 'The following will be permanently deleted:',
-    w1: 'Your profile, display name and avatar',
-    w2: 'Your saved wheels',
-    w3: 'Your day streak and your history',
-    w4: 'Your room membership, answers and drawings',
-    w5: 'Your access to the account',
-    subs: 'An active Play Plus subscription is NOT cancelled here. Cancel it first on Google Play, under Payments and subscriptions, or billing continues.',
-    typeHint: 'To confirm, type CONFIRM in the field below:',
-    deleteBtn: 'Delete my account', cancel: 'Cancel and sign out',
-    step3: 'Done', doneTitle: 'Your account has been deleted.',
-    doneBody: 'The data linked to it has been removed from our servers. You can close this page. If you ever want to play again, just open the app and a new account will be created.',
-    privacy: 'Privacy policy',
+  pt: {
+    noJs: 'Esta página precisa de JavaScript para apagar a sua conta com segurança. Ative-o e recarregue, ou apague a conta pelo próprio aplicativo, em Configurações.',
+    offline: 'Não foi possível carregar esta página por completo. Verifique sua conexão e tente de novo. Você também pode apagar a conta pelo próprio aplicativo, em Configurações → Excluir conta.',
+    title: 'Excluir conta', app: 'Play Social Games',
+    step1: 'Passo 1 — identifique-se',
+    signInHint: 'Entre com a mesma conta Google que você usa no aplicativo. Sem isso não há como saber qual conta apagar — e ninguém pode apagar a conta de outra pessoa.',
+    signIn: 'Entrar com Google',
+    step2: 'Passo 2 — confirme', signedAs: 'Conectado como',
+    warn: '<b>Esta ação é permanente e não pode ser desfeita.</b>',
+    whatGoes: 'Serão apagados definitivamente:',
+    w1: 'Seu perfil, nome de exibição e avatar',
+    w2: 'Suas roletas salvas',
+    w3: 'Sua sequência de dias e seu histórico',
+    w4: 'Sua participação em salas, respostas e desenhos',
+    w5: 'Seu acesso à conta',
+    subs: 'Uma assinatura ativa do Play Plus <b>não</b> é cancelada por aqui. Cancele antes na Google Play, em Pagamentos e assinaturas, ou a cobrança continua.',
+    typeHint: 'Para confirmar, digite <b>CONFIRM</b> no campo abaixo:',
+    deleteBtn: 'Excluir minha conta', cancel: 'Cancelar e sair',
+    step3: 'Concluído', doneTitle: 'Sua conta foi excluída.',
+    doneBody: 'Os dados ligados a ela foram removidos dos nossos servidores. Você pode fechar esta página. Se quiser jogar de novo um dia, basta entrar no aplicativo e uma conta nova será criada.',
+    privacy: 'Política de privacidade',
   },
   es: {
+    noJs: 'Esta página necesita JavaScript para eliminar tu cuenta de forma segura. Actívalo y recarga, o elimina la cuenta desde la propia aplicación, en Ajustes.',
+    offline: 'No se pudo cargar esta página por completo. Comprueba tu conexión e inténtalo de nuevo. También puedes eliminar la cuenta desde la propia aplicación, en Ajustes → Eliminar cuenta.',
     title: 'Eliminar cuenta', app: 'Play Social Games',
     step1: 'Paso 1 — identifícate',
     signInHint: 'Entra con la misma cuenta de Google que usas en la aplicación. Sin eso no hay forma de saber qué cuenta eliminar — y nadie puede eliminar la cuenta de otra persona.',
@@ -272,14 +275,24 @@ const STRINGS = {
   },
 };
 
-// O português é o que já está escrito no HTML; guardá-lo na primeira passagem
-// evita manter o mesmo texto em dois lugares.
+/*
+ * O inglês é o que já está escrito no HTML, e por isso não aparece no dicionário
+ * acima.
+ *
+ * Não é organização: é o que faz a página continuar legível quando o script não
+ * roda. Se o inglês vivesse no objeto, uma falha de JavaScript deixaria a tela em
+ * branco — numa página de apagar conta, a pior coisa possível. Como o idioma
+ * padrão é o inglês, a versão sem script já é a versão certa. Guardá-lo na
+ * primeira passagem também evita a mesma frase existir em dois lugares e um dia
+ * divergirem.
+ */
+STRINGS.en = {};
 document.querySelectorAll('[data-t]').forEach((node) => {
-  STRINGS.pt[node.dataset.t] = node.innerHTML;
+  STRINGS.en[node.dataset.t] = node.innerHTML;
 });
 
 function setLang(lang) {
-  const dict = STRINGS[lang] ?? STRINGS.pt;
+  const dict = STRINGS[lang] ?? STRINGS.en;
   document.querySelectorAll('[data-t]').forEach((node) => {
     const value = dict[node.dataset.t];
     // `innerHTML` só com texto que está neste arquivo — nada vindo de usuário
@@ -287,6 +300,7 @@ function setLang(lang) {
     if (value !== undefined) node.innerHTML = value;
   });
   document.documentElement.lang = lang === 'pt' ? 'pt-BR' : lang;
+  document.title = `${dict.title ?? STRINGS.en.title} — Play Social Games`;
   document.querySelectorAll('#langs button').forEach((b) => {
     b.setAttribute('aria-pressed', String(b.dataset.lang === lang));
   });
@@ -418,6 +432,11 @@ el.del.addEventListener('click', async () => {
 
   el.errDel.hidden = true;
   el.del.disabled = true;
+  /* O rótulo é guardado, e não reescrito à mão na volta.
+     Antes, o caminho de erro devolvia a frase em português fixa no código: quem
+     estivesse lendo a página em inglês via o botão trocar de idioma sozinho ao
+     falhar. Guardado aqui, ele volta no idioma em que estava. */
+  const label = el.del.textContent;
   el.del.textContent = '...';
 
   // A função não recebe quem apagar: ela apaga quem chamou. É essa ausência de
@@ -427,7 +446,7 @@ el.del.addEventListener('click', async () => {
   if (error) {
     fail(el.errDel, error.message);
     el.del.disabled = false;
-    el.del.textContent = 'Excluir minha conta';
+    el.del.textContent = label;
     return;
   }
 
